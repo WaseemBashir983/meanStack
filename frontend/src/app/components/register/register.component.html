@@ -2,31 +2,49 @@
     <h1>Register</h1>
 </div>
 
+<div class="how-hide-message">
+    <div [ngClass]="MessageCalss">
+        {{message}}
+    </div>
+</div>
 <form [formGroup]="formRegister" (submit)='onRegisterSubmit()'>
 
     <div class="form-group">
         <label for="exampleInputEmail1">Name</label>
-        <input type="text" class="form-control" formControlName="username" id="username" name="username" placeholder="Enter Name">
-        <ul class="help-block">
-            <li *ngIf="formRegister.controls.username.dirty && formRegister.controls.username.errors?.required">This feild is required</li>
-        </ul>
+        <div [ngClass]="formRegister.controls.username.errors && formRegister.controls.username.touched ? 'has-error' : 'has-success'">
+            <input type="text" class="form-control" formControlName="username" id="username" name="username" placeholder="Enter Name">
+            <ul class="help-block">
+                <li *ngIf="formRegister.controls.username.dirty && formRegister.controls.username.errors?.required">This feild is required</li>
+                <li *ngIf="formRegister.controls.username.dirty && (formRegister.controls.username.errors?.minlength || formRegister.controls.username.errors?.maxlength)">Username must be at least 6 characters and not more than 15</li>
+
+            </ul>
+        </div>
     </div>
 
     <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
-        <input type="email" formControlName="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+        <input type="email" formControlName="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email" (blur)="checkEmail()">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        <ul class="help-block">
+            <li *ngIf="formRegister.controls.email.dirty && formRegister.controls.email.errors?.required">This feild is required</li>
+            <li *ngIf="formRegister.controls.email.dirty && formRegister.controls.email.errors?.email">Email must be a valid email address</li>
+            <li *ngIf="emailMessage && !emailValid">{{emailMessage}}</li>
+        </ul>
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
-        <input type="password" formControlName="password" class="form-control" name="password" id="password" placeholder="Password">
+        <input type="password" formControlName="password" class="form-control" name="password" placeholder="Password">
+        <ul class="help-block">
+            <li *ngIf="formRegister.controls.password.dirty && formRegister.controls.password.errors?.required">This feild is required</li>
+            <li *ngIf="formRegister.controls.password.dirty && formRegister.controls.password.errors?.minlength">Password must be at least 8 characters</li>
+        </ul>
     </div>
     <div class="form-group form-check">
-        <input type="checkbox" name="agree" formControlName="agree" class="form-check-input" id="exampleCheck1">
+        <input type="checkbox" name="agree" value="1" formControlName="agree" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">I agree with terms and conditions</label>
+        <ul class="help-block">
+            <li *ngIf="formRegister.controls.agree.dirty && formRegister.controls.agree.errors?.required">This feild is required</li>
+        </ul>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button [disabled]="formRegister.invalid || !emailValid" type="submit" class="btn btn-primary">Submit</button>
 </form>
-<p>Username:{{ formRegister.controls.username.value }}</p>
-<p>Email: {{ formRegister.controls.email.value }}</p>
-<p>Password: {{ formRegister.controls.password.value }}</p>
