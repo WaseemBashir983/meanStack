@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 var UserSchema = new mongoose.Schema({
-    username: { type: String, unique: true, lowercase: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true },
+    username: { type: String },
     email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
     bio: String,
     image: String,
@@ -19,6 +19,12 @@ UserSchema.pre('save', function(next) {
         next()
     });
 
-})
+});
+
+
+// Methods to compare password to encrypted password upon login
+UserSchema.methods.comparePassword = function(password) {
+    return bcrypt.compareSync(password, this.password); // Return comparison of login password to password in database (true or false)
+};
 
 module.exports = mongoose.model('User', UserSchema);

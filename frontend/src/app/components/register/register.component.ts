@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
   MessageCalss: string;
   emailValid: boolean;
   emailMessage: string;
+  processing: boolean;
 
 
   constructor(private formBuilder: FormBuilder, private AuthService : AuthService) {
