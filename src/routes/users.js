@@ -1,7 +1,8 @@
 const userModel = require('../models/user')
+const jwt = require('jsonwebtoken');
+
 module.exports = function(router) {
     router.post('/register', function(req, res) {
-
         if (!req.body.email || !req.body.username) {
             res.json({ success: false, message: 'Please provide all data' });
         } else {
@@ -50,7 +51,10 @@ module.exports = function(router) {
                     if (!validPassword) {
                         res.json({ success: false, message: 'Password not matched' });
                     } else {
-                        res.json({ success: true, message: 'User found', user: user });
+                        var secret = require('crypto').randomBytes(64).toString('hex');
+                        var token = jwt.sign({ userId: user._id }, secret, { expiresIn: '24h' });
+
+                        res.json({ success: true, message: 'User found', token: token, user: { username: user.username, email: user.email } });
                     }
                 } else {
                     res.json({ success: false, message: 'User not found' });
@@ -58,5 +62,36 @@ module.exports = function(router) {
             })
         }
     });
+
+    app.use((req, res, next) => {
+        const token = req.headers['authorization'];
+        if (!token) {
+            res.json({ success: false, message: 'Please provide token' });
+        } else {
+            var secret = require('crypto').randomBytes(64).toString('hex');
+
+            jwt.verify(token, secret, (err, decoded) => {
+
+
+            });
+        }
+    });
+    router.get('/profile/', function(req, res) {
+        if (!req.params.token) {
+            res.json({ success: false, message: 'Please provide Email' });
+        } else {
+            userModel.findOne({ email: req.params.email }, (err, user) => {
+                if (err) {
+                    res.json({ success: false, message: err });
+                } else if (user) {
+                    res.json({ success: false, message: 'Email is already exist' });
+                } else {
+                    res.json({ success: true, message: 'Email is avaialble' });
+                }
+            })
+        }
+    });
+
+
     return router;
 }
