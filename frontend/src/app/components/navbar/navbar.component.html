@@ -7,17 +7,21 @@
             <a class="nav-link" routerLink="/">Home</a>
 
         </li>
-        <li class="nav-item">
+        <li *ngIf="!authService.LoggedIn()" class="nav-item">
             <a class="nav-link" routerLink="/login">Login</a>
         </li>
 
-        <li class="nav-item">
+        <li *ngIf="!authService.LoggedIn()" class="nav-item">
             <a class="nav-link" routerLink="/register">Register</a>
+        </li>
+
+        <li *ngIf="authService.LoggedIn()" class="nav-item">
+            <a class="nav-link" href="javascript:;" (click)='onLogout()'>Logout</a>
         </li>
 
     </ul>
 
-    <div class="bs-example">
+    <div class="bs-example" *ngIf="authService.LoggedIn()">
         <div class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">User</a>
             <div class="dropdown-menu">

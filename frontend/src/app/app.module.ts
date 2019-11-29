@@ -11,7 +11,7 @@ import { HttpModule } from '@angular/http';
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
-
+import { FlashMessagesModule } from 'angular2-flash-messages';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +26,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    FlashMessagesModule.forRoot(),
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

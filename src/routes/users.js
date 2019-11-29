@@ -1,6 +1,6 @@
 const userModel = require('../models/user')
 const jwt = require('jsonwebtoken');
-
+var secret = require('crypto').randomBytes(64).toString('hex');
 module.exports = function(router) {
     router.post('/register', function(req, res) {
         if (!req.body.email || !req.body.username) {
@@ -21,6 +21,7 @@ module.exports = function(router) {
         }
     });
     router.get('/checkEmail/:email', function(req, res) {
+
         if (!req.params.email) {
             res.json({ success: false, message: 'Please provide Email' });
         } else {
@@ -51,7 +52,7 @@ module.exports = function(router) {
                     if (!validPassword) {
                         res.json({ success: false, message: 'Password not matched' });
                     } else {
-                        var secret = require('crypto').randomBytes(64).toString('hex');
+
                         var token = jwt.sign({ userId: user._id }, secret, { expiresIn: '24h' });
 
                         res.json({ success: true, message: 'User found', token: token, user: { username: user.username, email: user.email } });
@@ -63,33 +64,42 @@ module.exports = function(router) {
         }
     });
 
-    app.use((req, res, next) => {
-        const token = req.headers['authorization'];
+    router.use((req, res, next) => {
+
+        const token = req.headers['authorization']; // Create token found in headers
+        // Check if token was found in headers
         if (!token) {
-            res.json({ success: false, message: 'Please provide token' });
+            res.json({ success: false, message: 'No token provided' }); // Return error
         } else {
-            var secret = require('crypto').randomBytes(64).toString('hex');
-
+            // Verify the token is valid
             jwt.verify(token, secret, (err, decoded) => {
-
-
+                // Check if error is expired or invalid
+                if (err) {
+                    res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
+                } else {
+                    req.decoded = decoded; // Create global variable to use in any request beyond
+                    next(); // Exit middleware
+                }
             });
         }
     });
-    router.get('/profile/', function(req, res) {
-        if (!req.params.token) {
-            res.json({ success: false, message: 'Please provide Email' });
-        } else {
-            userModel.findOne({ email: req.params.email }, (err, user) => {
-                if (err) {
-                    res.json({ success: false, message: err });
-                } else if (user) {
-                    res.json({ success: false, message: 'Email is already exist' });
+
+    router.get('/profile', (req, res) => {
+
+        // Search for user in database
+        userModel.findOne({ _id: req.decoded.userId }).select('username email').exec((err, user) => {
+            // Check if error connecting
+            if (err) {
+                res.json({ success: false, message: err }); // Return error
+            } else {
+                // Check if user was found in database
+                if (!user) {
+                    res.json({ success: false, message: 'User not found' }); // Return error, user was not found in db
                 } else {
-                    res.json({ success: true, message: 'Email is avaialble' });
+                    res.json({ success: true, user: user }); // Return success, send user object to frontend for profile
                 }
-            })
-        }
+            }
+        });
     });
 
 

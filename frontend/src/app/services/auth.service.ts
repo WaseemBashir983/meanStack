@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { map } from 'rxjs/operators';
-
+//import { tokenNotExpired } from 'angular2-jwt';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +26,11 @@ login(user) {
   return this.http.post(this.apiUrl + 'api/login', user).pipe(map(res => res.json()));
 }
 
+logout(){
+this.authToken = null;
+this.user = null;
+localStorage.clear();
+}
 getprofile() {
   this.addAuthHeaders();
   return this.http.get(this.apiUrl + 'api/profile/' , this.options).pipe(map(res => res.json()));
@@ -55,5 +60,8 @@ headers : new Headers ({
 });
 }
 
+LoggedIn() {
+//return tokenNotExpired();
+}
 
 }
