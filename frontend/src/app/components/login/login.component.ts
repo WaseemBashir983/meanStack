@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AuthGuard } from '../../authguards/auth.guard';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,25 +10,31 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-
   formLogin: FormGroup;
   message: string;
   MessageCalss: string;
   emailValid: boolean;
   emailMessage: string;
 
-  constructor(private formBuilder: FormBuilder , private AuthService : AuthService , private router: Router) {
+  constructor(private formBuilder: FormBuilder , private AuthService : AuthService , private router: Router, private authGuard: AuthGuard) {
     this.createFrom();
 
   }
 
   ngOnInit() {
+    if(this.authGuard.redirectUrl) {
+      this.message = 'You must login to access this page';
+      this.MessageCalss = 'alert alert-danger';
+    }else{
+      this.message = '';
+      this.MessageCalss = '';
+    }
   }
 
   createFrom() {
     this.formLogin = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]
+      password: ['', [Validators.required],
     });
   }
 
@@ -45,7 +52,11 @@ export class LoginComponent implements OnInit {
             this.AuthService.saveUserData(data.token, data.user);
 
           setTimeout(() => {
-          this.router.navigate(['/dashbaord']);
+            if(this.authGuard.redirectUrl) {
+              this.router.navigate([this.authGuard.redirectUrl]);
+            }else{
+             this.router.navigate(['/dashbaord']);
+            }
           }, 2000);
 
         } else {

@@ -6,14 +6,16 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-user;
+username;
+email;
   constructor(private AuthService : AuthService ) { }
 
   ngOnInit() {
 
     this.AuthService.getprofile().subscribe(data => {
       if (data.success) {
-           this.user = data.user;
+           this.username = data.user.username;
+           this.email = data.user.email;
       } else {
 
       }

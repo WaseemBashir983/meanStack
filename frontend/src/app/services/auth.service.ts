@@ -1,10 +1,14 @@
+// import { Injectable } from '@angular/core';
+// import { Http, Headers, RequestOptions } from '@angular/http';
+// //import { tokenNotExpired } from 'angular2-jwt';
+// import { map } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { map } from 'rxjs/operators';
-//import { tokenNotExpired } from 'angular2-jwt';
-@Injectable({
-  providedIn: 'root'
-})
+import { tokenNotExpired } from 'angular2-jwt';
+
+@Injectable()
 export class AuthService {
 
    apiUrl = 'http://localhost:3000/';  // URL to web api
@@ -61,7 +65,8 @@ headers : new Headers ({
 }
 
 LoggedIn() {
-//return tokenNotExpired();
+
+  return tokenNotExpired();
 }
 
 }

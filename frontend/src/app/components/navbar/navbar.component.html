@@ -7,6 +7,15 @@
             <a class="nav-link" routerLink="/">Home</a>
 
         </li>
+
+
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+
+        <li *ngIf="authService.LoggedIn()" class="nav-item">
+            <a class="nav-link" routerLink="/blog">Blog</a>
+        </li>
+
         <li *ngIf="!authService.LoggedIn()" class="nav-item">
             <a class="nav-link" routerLink="/login">Login</a>
         </li>
@@ -19,16 +28,17 @@
             <a class="nav-link" href="javascript:;" (click)='onLogout()'>Logout</a>
         </li>
 
-    </ul>
-
-    <div class="bs-example" *ngIf="authService.LoggedIn()">
-        <div class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">User</a>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" routerLink="/dashbaord">Dashbaord</a>
-                <a class="dropdown-item" routerLink="/profile">Profile</a>
+        <div class="bs-example" *ngIf="authService.LoggedIn()">
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">User</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" routerLink="/dashbaord">Dashbaord</a>
+                    <a class="dropdown-item" routerLink="/profile">Profile</a>
+                </div>
             </div>
         </div>
-    </div>
+
+    </ul>
+
 
 </nav>
