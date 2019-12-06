@@ -1,13 +1,49 @@
 <div class="page-header">
     <h1>Blog Feeds</h1>
 </div>
+<div class="how-hide-message">
+    <div [ngClass]="MessageCalss">
+        {{message}}
+    </div>
+</div>
+<div class="button mb-2">
+    <button class="btn btn-primary mr-1" (click)='onCreate()'><i class="fa fa-plus"></i> Create Blog</button>
+    <button [disabled]="loadingBlog" *ngIf="!newPost" class="btn btn-secondary" (click)='onReload()'><i class="fa fa-undo"></i> Reload</button>
+</div>
+<form [formGroup]="form" (submit)='onBlogSubmit()' *ngIf="newPost">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Blog Title</label>
+        <input type="text" formControlName="title" class="form-control" name="title" id="title" aria-describedby="emailHelp" placeholder="Enter Title">
+        <ul class="help-block">
+            <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.required">This feild is required</li>
+            <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.minlength">Title should be atleast 5 characters</li>
+            <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.maxlength">Title cannot be morethank 500 characters</li>
+        </ul>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Body</label>
+        <textarea formControlName="body" rows="8" cols="30" class="form-control" name="body" placeholder="Enter blog body">
+</textarea>
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Post Title</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Posted By: Waseem</h6>
-        <h6 class="card-subtitle mb-2 text-muted">Date: 20,104,2019</h6>
-        <p class="card-text">Some quick example text to build on the panel title and make up the bulk of the panel's content.</p>
+        <ul class="help-block">
+            <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This feild is required</li>
+        </ul>
+    </div>
+    <button [disabled]="form.invalid || processing" type="submit" class="btn btn-primary  mr-1">Submit</button>
+    <button type="submit" (click)='onCancel()' class="btn btn-warning">GoBack</button>
+</form>
+
+
+<div class="card" *ngIf="!newPost">
+    <div class="card-body" *ngFor="let blog of blogPosts">
+        <h5 class="card-title">{{blog.title}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Posted By: {{blog.createdBy}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Date: {{blog.createdAt | date:'MMM dd,yyyy'}}</h6>
+        <p class="card-text">{{blog.body}}</p>
+
+        <h6 class="card-subtitle mb-2 text-muted">Likes: {{blog.likes}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Dislikes: {{blog.dislikes}}</h6>
+
         <a href="#!" class="card-link">Edit</a>
         <a href="#!" class="card-link">Delete</a>
     </div>

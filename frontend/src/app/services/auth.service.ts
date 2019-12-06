@@ -53,6 +53,12 @@ this.authToken = token;
 
 }
 
+
+getUserName(){
+var obj = JSON.parse(localStorage.getItem('user'));
+return obj.username;
+}
+
 addAuthHeaders() {
 this.loadToken();
 this.options = new RequestOptions({

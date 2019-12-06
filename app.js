@@ -26,7 +26,7 @@ app.set('view engine', 'hbs');
 //hbs.registerPartials(partialsPath);
 app.use(express.static(publicPath));
 app.use('/api', UserRoutes);
-app.use('/api', BlogRoutes);
+app.use('/api/blog', BlogRoutes);
 app.get('', function(req, res) {
     res.sendFile(path.join(__dirname + '/client/dist/client/index.html'));
 })

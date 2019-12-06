@@ -1,7 +1,5 @@
 var mongoose = require('mongoose');
 
-
-
 // Validate Function to check blog title length
 let titleLengthChecker = (title) => {
     // Check if blog title exists
@@ -81,7 +79,8 @@ var BlogSchema = new mongoose.Schema({
         validate: bodyValidators
     },
     createdBy: {
-        type: String
+        type: String,
+        required: true,
     },
     createdAt: { type: Date, default: Date.now() },
     likes: { type: Number, default: 0 },
@@ -89,7 +88,7 @@ var BlogSchema = new mongoose.Schema({
     dislikes: { type: Number, default: 0 },
     dislikedBy: { type: Array },
     comments: [{
-        comment: { type: String, validate: commentValidators },
+        comment: { type: String },
         commentator: { type: String }
     }]
 }, { timestamps: true });
