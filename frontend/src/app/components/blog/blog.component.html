@@ -44,7 +44,7 @@
         <h6 class="card-subtitle mb-2 text-muted">Likes: {{blog.likes}}</h6>
         <h6 class="card-subtitle mb-2 text-muted">Dislikes: {{blog.dislikes}}</h6>
 
-        <a href="#!" class="card-link">Edit</a>
+        <a href="javascript:;" [routerLink]="['/edit-blog', blog._id]" class="card-link">Edit</a>
         <a href="#!" class="card-link">Delete</a>
     </div>
 </div>

@@ -48,5 +48,30 @@ module.exports = function(router) {
     });
 
 
+    router.get('/get/:id', (req, res) => {
+
+        if (!req.params.id) {
+            res.json({ success: false, message: 'NO Blog ID was provided' });
+        } else {
+
+            blogModel.findOne({ _id: req.params.id }, (err, blog) => {
+                // Check if error connecting
+                if (err) {
+                    res.json({ success: false, message: err }); // Return error
+                } else {
+                    // Check if user was found in database
+                    if (!blog) {
+                        res.json({ success: false, message: 'Blog not found' }); // Return error, user was not found in db
+                    } else {
+                        res.json({ success: true, blog: blog }); // Return success, send user object to frontend for profile
+                    }
+                }
+            });
+
+        }
+
+    });
+
+
     return router;
 }

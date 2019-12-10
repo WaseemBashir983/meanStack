@@ -9,6 +9,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AuthGuard } from './authguards/auth.guard';
 import { NotAuthGuard } from './authguards/notauth.guard';
 import { BlogComponent } from './components/blog/blog.component';
+import { EditBlogComponent } from './components/blog/edit-blog/edit-blog.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,11 @@ const routes: Routes = [
  {
   path : 'blog',
   component: BlogComponent,
+  canActivate: [AuthGuard]
+ },
+ {
+  path : 'edit-blog/:id',
+  component: EditBlogComponent,
   canActivate: [AuthGuard]
  },
  {
