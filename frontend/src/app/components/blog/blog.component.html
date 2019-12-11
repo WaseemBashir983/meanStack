@@ -30,21 +30,31 @@
         </ul>
     </div>
     <button [disabled]="form.invalid || processing" type="submit" class="btn btn-primary  mr-1">Submit</button>
-    <button type="submit" (click)='onCancel()' class="btn btn-warning">GoBack</button>
+    <button type="button" (click)='onCancel()' class="btn btn-warning">GoBack</button>
 </form>
 
+<div *ngIf="!newPost">
 
-<div class="card" *ngIf="!newPost">
-    <div class="card-body" *ngFor="let blog of blogPosts">
-        <h5 class="card-title">{{blog.title}}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Posted By: {{blog.createdBy}}</h6>
-        <h6 class="card-subtitle mb-2 text-muted">Date: {{blog.createdAt | date:'MMM dd,yyyy'}}</h6>
-        <p class="card-text">{{blog.body}}</p>
 
-        <h6 class="card-subtitle mb-2 text-muted">Likes: {{blog.likes}}</h6>
-        <h6 class="card-subtitle mb-2 text-muted">Dislikes: {{blog.dislikes}}</h6>
+    <div class="comeBack_up" *ngIf="(blogPosts | json) == '[]'">
+        <strong>No blogs post found please create new one</strong>
+    </div>
 
-        <a href="javascript:;" [routerLink]="['/edit-blog', blog._id]" class="card-link">Edit</a>
-        <a href="#!" class="card-link">Delete</a>
+    <div class="card mb-2" *ngFor="let blog of blogPosts">
+        <div class="card-body">
+            <h5 class="card-title">{{blog.title}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Posted By: {{blog.createdBy}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Date: {{blog.createdAt | date:'MMM dd,yyyy'}}</h6>
+            <p class="card-text">{{blog.body}}</p>
+
+            <button class="btn btn-success mr-1" (click)='likePost(blog._id)'><i class="fa fa-thumbs-up"></i> Likes: {{blog.likes}}</button>
+            <button class="btn btn-danger" (click)='dislikePost(blog._id)'><i class="fa fa-thumbs-down"></i> Dislikes: {{blog.dislikes}}</button>
+
+            <div class="card-fotter mt-2">
+                <a href="javascript:;" [routerLink]="['/edit-blog', blog._id]" class="card-link">Edit</a>
+                <a href="javascript:;" (click)='onDelete(blog.title,blog._id)' class="card-link">Delete</a>
+            </div>
+
+        </div>
     </div>
 </div>

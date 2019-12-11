@@ -82,6 +82,10 @@ var BlogSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    authorId: {
+        type: String,
+        required: true,
+    },
     createdAt: { type: Date, default: Date.now() },
     likes: { type: Number, default: 0 },
     likedBy: { type: Array },

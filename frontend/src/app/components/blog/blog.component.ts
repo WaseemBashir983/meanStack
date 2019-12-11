@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+
 import { BlogService } from '../../services/blog.service';
 import { AuthService } from '../../services/auth.service';
 @Component({
@@ -89,5 +90,66 @@ getBlogs() {
     }
 });
 }
+
+onDelete(name: string, id: string) {
+
+  swal({
+    title: "Are you sure you want to delete "+ name + ' ?',
+    text: "Once deleted, you will not be able to recover this!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+        this.blogService.deleteBlog(id).subscribe(data => {
+    if (data.success) {
+      this.message = data.message;
+      this.MessageCalss = 'alert alert-success';
+      this.getBlogs();
+    } else {
+      this.message = data.message;
+      this.MessageCalss = 'alert alert-danger';
+    }
+});
+
+}
+
+  });
+
+}
+
+likePost(id){
+  this.blogService.likeBlog(id).subscribe(data => {
+    if (data.success) {
+      this.message = data.message;
+      this.MessageCalss = 'alert alert-success';
+      this.getBlogs();
+    } else {
+      this.message = data.message;
+      this.MessageCalss = 'alert alert-danger';
+    }
+});
+}
+
+dislikePost(id){
+  this.blogService.dislikeBlog(id).subscribe(data => {
+    if (data.success) {
+      this.message = data.message;
+      this.MessageCalss = 'alert alert-success';
+      this.getBlogs();
+    } else {
+      this.message = data.message;
+      this.MessageCalss = 'alert alert-danger';
+    }
+
+    setTimeout(() => {
+      this.message = '';
+      this.MessageCalss = '';
+    }, 2000);
+
+});
+}
+
 
 }

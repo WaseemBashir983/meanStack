@@ -23,17 +23,33 @@ getBlogs() {
 }
 
 
-updateBlog(blog) {
-  this.authService.addAuthHeaders();
 
-  return this.http.post(this.authService.apiUrl + 'api/blog/update/' , blog , this.authService.options).pipe(map(res => res.json()));
-}
-
-
-getBlog(id) {
+getBlog(id: string) {
   this.authService.addAuthHeaders();
   return this.http.get(this.authService.apiUrl + 'api/blog/get/' + id ,  this.authService.options).pipe(map(res => res.json()));
 }
 
+updateBlog(blog: any) {
+  this.authService.addAuthHeaders();
+
+  return this.http.put(this.authService.apiUrl + 'api/blog/updateBlog/' , blog , this.authService.options).pipe(map(res => res.json()));
+}
+
+deleteBlog(id: string) {
+  this.authService.addAuthHeaders();
+  return this.http.delete(this.authService.apiUrl + 'api/blog/delete/' + id ,  this.authService.options).pipe(map(res => res.json()));
+}
+
+
+likeBlog(id: string) {
+  const data = {id: id};
+  this.authService.addAuthHeaders();
+  return this.http.put(this.authService.apiUrl + 'api/blog/like/' , data,   this.authService.options).pipe(map(res => res.json()));
+}
+dislikeBlog(id: string) {
+  const data = {id: id};
+  this.authService.addAuthHeaders();
+  return this.http.put(this.authService.apiUrl + 'api/blog/dislike/'  , data,  this.authService.options).pipe(map(res => res.json()));
+}
 
 }
