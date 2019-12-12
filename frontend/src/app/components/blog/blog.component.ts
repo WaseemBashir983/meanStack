@@ -17,6 +17,8 @@ export class BlogComponent implements OnInit {
   loadingBlog: boolean = false;
   processing: boolean  = false;
   blogPosts;
+  blogPostsCopy;
+  searchTerm;
 
 
   constructor(private formBuilder: FormBuilder, private blogService: BlogService, private authService: AuthService) { }
@@ -83,9 +85,13 @@ export class BlogComponent implements OnInit {
   }
 
 getBlogs() {
-  this.blogService.getBlogs().subscribe(data => {
+
+  const pageNo = 1;
+  const size = 10;
+  this.blogService.getBlogs(pageNo, size).subscribe(data => {
     if (data.success) {
       this.blogPosts = data.blogs;
+      this.blogPostsCopy = data.blogs;
     } else {
     }
 });
@@ -151,5 +157,17 @@ dislikePost(id){
 });
 }
 
+search(): void {
+  let term = this.searchTerm;
+  if(term !=='' ){
+  this.blogPosts = this.blogService.searchBlog(term).subscribe(data => {
+    if(data.success) {
+      this.blogPosts = data.blogs;
+    }
+  });
+}else{
+  this.getBlogs();
+}
+}
 
 }

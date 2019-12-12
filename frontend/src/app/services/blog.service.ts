@@ -15,13 +15,17 @@ export class BlogService {
     return this.http.post(this.authService.apiUrl + 'api/blog/createBlog/' , blog , this.authService.options).pipe(map(res => res.json()));
   }
 
-getBlogs() {
+getBlogs(pageNo, size) {
+
+  const params = {
+    pageNo: pageNo,
+    size: size
+  };
 
   this.authService.addAuthHeaders();
-  return this.http.get(this.authService.apiUrl + 'api/blog/getBlogs' , this.authService.options).pipe(map(res => res.json()));
+  return this.http.get(this.authService.apiUrl + 'api/blog/getBlogs'  , this.authService.options).pipe(map(res => res.json()));
 
 }
-
 
 
 getBlog(id: string) {
@@ -50,6 +54,13 @@ dislikeBlog(id: string) {
   const data = {id: id};
   this.authService.addAuthHeaders();
   return this.http.put(this.authService.apiUrl + 'api/blog/dislike/'  , data,  this.authService.options).pipe(map(res => res.json()));
+}
+
+
+searchBlog(searchTerm: string) {
+  const data = {term: searchTerm};
+  this.authService.addAuthHeaders();
+  return this.http.post(this.authService.apiUrl + 'api/blog/search/'  , data,  this.authService.options).pipe(map(res => res.json()));
 }
 
 }

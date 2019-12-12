@@ -6,9 +6,16 @@
         {{message}}
     </div>
 </div>
-<div class="button mb-2">
-    <button class="btn btn-primary mr-1" (click)='onCreate()'><i class="fa fa-plus"></i> Create Blog</button>
-    <button [disabled]="loadingBlog" *ngIf="!newPost" class="btn btn-secondary" (click)='onReload()'><i class="fa fa-undo"></i> Reload</button>
+<div class="row">
+    <div class="col-sm-8">
+        <div class="button mb-2">
+            <button class="btn btn-primary mr-1" (click)='onCreate()'><i class="fa fa-plus"></i> Create Blog</button>
+            <button [disabled]="loadingBlog" *ngIf="!newPost" class="btn btn-secondary" (click)='onReload()'><i class="fa fa-undo"></i> Reload</button>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="search()" class="form-control" name="search" placeholder="Search Blog" />
+    </div>
 </div>
 <form [formGroup]="form" (submit)='onBlogSubmit()' *ngIf="newPost">
     <div class="form-group">

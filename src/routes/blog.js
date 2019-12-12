@@ -32,22 +32,42 @@ module.exports = function(router) {
 
     router.get('/getBlogs', (req, res) => {
 
-        // Search for user in database
-        blogModel.find({}, (err, blogs) => {
-            // Check if error connecting
-            if (err) {
-                res.json({ success: false, message: err }); // Return error
-            } else {
-                // Check if user was found in database
-                if (!blogs) {
-                    res.json({ success: false, message: 'No blogs found' }); // Return error, user was not found in db
-                } else {
-                    res.json({ success: true, blogs: blogs }); // Return success, send user object to frontend for profile
-                }
-            }
-        }).sort({ '_id': -1 });
-    });
 
+        var pageNo = parseInt(req.query.pageNo)
+        var size = parseInt(req.query.size)
+        var query = {}
+
+        if (pageNo < 0 || pageNo === 0) {
+            response = { "error": true, "message": "invalid page number, should start with 1" };
+            return res.json(response)
+        }
+
+        query.skip = size * (pageNo - 1)
+        query.limit = size
+            // Search for user in database
+
+        blogModel.count({}, function(err, totalCount) {
+            if (err) {
+                response = { "error": true, "message": "Error fetching data" }
+            }
+
+
+            blogModel.find({}, {}, query, (err, blogs) => {
+                // Check if error connecting
+                if (err) {
+                    res.json({ success: false, message: err }); // Return error
+                } else {
+                    // Check if user was found in database
+                    if (!blogs) {
+                        res.json({ success: false, message: 'No blogs found' }); // Return error, user was not found in db
+                    } else {
+                        var totalPages = Math.ceil(totalCount / size)
+                        res.json({ success: true, blogs: blogs, pages: totalPages }); // Return success, send user object to frontend for profile
+                    }
+                }
+            }).sort({ '_id': -1 });
+        });
+    });
 
     router.get('/get/:id', (req, res) => {
 
@@ -308,6 +328,32 @@ module.exports = function(router) {
         }
 
     });
+
+
+    router.post('/search', (req, res) => {
+
+        var term = req.body.term;
+
+        query = {
+            title: new RegExp(term, 'i')
+        };
+
+        // Search for user in database
+        blogModel.find(query, (err, blogs) => {
+            // Check if error connecting
+            if (err) {
+                res.json({ success: false, message: err }); // Return error
+            } else {
+                // Check if user was found in database
+                if (!blogs) {
+                    res.json({ success: false, message: 'No blogs found' }); // Return error, user was not found in db
+                } else {
+                    res.json({ success: true, blogs: blogs }); // Return success, send user object to frontend for profile
+                }
+            }
+        }).sort({ '_id': -1 });
+    });
+
 
     return router;
 }
