@@ -10,7 +10,7 @@ import { AuthGuard } from '../../authguards/auth.guard';
 })
 export class LoginComponent implements OnInit {
 
-  formLogin: FormGroup;
+  formLogin;
   message: string;
   MessageCalss: string;
   emailValid: boolean;

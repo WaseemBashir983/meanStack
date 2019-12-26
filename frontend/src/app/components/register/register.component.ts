@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  formRegister: FormGroup;
+  formRegister;
   message: string;
   MessageCalss: string;
   emailValid: boolean;
@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
       username: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      agree: ['', Validators.required],
+      agree: ['', Validators.required]
     });
   }
 
@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
     const user = {
       'username': this.formRegister.get('username').value,
       'email': this.formRegister.get('email').value,
-      'password': this.formRegister.get('password').value,
+      'password': this.formRegister.get('password').value
     };
     this.AuthService.registerUser(user).subscribe(data => {
         if (data.success) {
