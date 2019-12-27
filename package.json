@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node app.js",
         "server": "nodemon server.js",
-        "build": "npm update && cd frontend && npm i -g @angular/cli && ng build --prod && cd.. && node app.js"
+        "build": "npm update && cd frontend && npm i -g @angular/cli && ng update && npm update && ng build --prod && cd.. && node app.js"
     },
     "keywords": [],
     "author": "",
