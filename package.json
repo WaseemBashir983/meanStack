@@ -21,9 +21,5 @@
         "mongoose": "^5.7.7",
         "request": "^2.88.0",
         "sweetalert": "^2.1.2"
-    },
-    "engines": {
-        "node": "~10.13.0",
-        "npm": "~6.4.1"
     }
 }
