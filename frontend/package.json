@@ -7,8 +7,7 @@
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
-        "e2e": "ng e2e",
-        "preinstall": "npm i --only=dev && npm i -g http-server && npm i -g @angular/cli"
+        "e2e": "ng e2e"
     },
     "private": true,
     "dependencies": {
@@ -32,6 +31,7 @@
         "zone.js": "~0.8.26"
     },
     "devDependencies": {
+        "@angular-devkit/build-angular": "~0.10.0",
         "@angular/language-service": "~7.0.0",
         "@types/node": "~8.9.4",
         "@types/jasmine": "~2.8.8",
