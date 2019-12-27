@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { BlogService } from '../../services/blog.service';
 import { AuthService } from '../../services/auth.service';
+declare let swal: any;
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
@@ -32,7 +33,7 @@ export class BlogComponent implements OnInit {
   createFrom() {
     this.form = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      body: ['', [Validators.required]
+      body: ['', [Validators.required]]
     })
   }
 

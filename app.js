@@ -6,7 +6,7 @@ const path = require('path')
 var bodyParser = require('body-parser')
 var cors = require('cors')
 const router = new express.Router()
-const publicPath = path.join(__dirname, '/client/dist/client');
+const publicPath = path.join(__dirname, 'public');
 //const partialsPath = path.join(__dirname, '/views/partials');
 const UserRoutes = require('./src/routes/users')(router)
 const BlogRoutes = require('./src/routes/blog')(router)
@@ -28,7 +28,7 @@ app.use(express.static(publicPath));
 app.use('/api', UserRoutes);
 app.use('/api/blog', BlogRoutes);
 app.get('', function(req, res) {
-    res.sendFile(path.join(__dirname + '/client/dist/client/index.html'));
+    res.sendFile(path.join(__dirname + '/public/index.html'));
 })
 
 
