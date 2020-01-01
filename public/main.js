@@ -1246,7 +1246,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var AuthService = /** @class */ (function () {
     function AuthService(http) {
         this.http = http;
-        this.apiUrl = 'http://localhost:3000/'; // URL to web api
+        this.apiUrl = ''; // URL to web api
     }
     AuthService.prototype.registerUser = function (user) {
         return this.http.post(this.apiUrl + 'api/register', user).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) { return res.json(); }));
