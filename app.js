@@ -27,7 +27,7 @@ app.set('view engine', 'hbs');
 app.use(express.static(publicPath));
 app.use('/api', UserRoutes);
 app.use('/api/blog', BlogRoutes);
-app.get('', function(req, res) {
+app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname + '/public/index.html'));
 })
 

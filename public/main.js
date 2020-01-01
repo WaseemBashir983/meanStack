@@ -1171,7 +1171,7 @@ var RegisterComponent = /** @class */ (function () {
         };
         this.AuthService.registerUser(user).subscribe(function (data) {
             if (data.success) {
-                _this.message = 'Account created succesfully';
+                _this.message = 'Account created please login';
                 _this.MessageCalss = 'alert alert-success';
                 _this.formRegister.reset();
             }

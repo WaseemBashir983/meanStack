@@ -15,8 +15,6 @@ export class RegisterComponent implements OnInit {
   emailValid: boolean;
   emailMessage: string;
   processing: boolean;
-
-
   constructor(private formBuilder: FormBuilder, private AuthService : AuthService) {
     this.createFrom();
   }
@@ -38,7 +36,7 @@ export class RegisterComponent implements OnInit {
     };
     this.AuthService.registerUser(user).subscribe(data => {
         if (data.success) {
-            this.message = 'Account created succesfully';
+            this.message = 'Account created please login';
             this.MessageCalss = 'alert alert-success';
             this.formRegister.reset();
         } else {
